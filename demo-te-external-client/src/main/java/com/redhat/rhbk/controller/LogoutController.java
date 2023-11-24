@@ -1,4 +1,4 @@
-package com.redhat.rhbk;
+package com.redhat.rhbk.controller;
 
 import java.util.HashMap;
 

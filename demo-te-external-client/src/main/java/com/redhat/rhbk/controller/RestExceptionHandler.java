@@ -11,6 +11,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -33,6 +34,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleClientError(
             HttpClientErrorException ex) {
         ApiError apiError = new ApiError(HttpStatus.resolve(ex.getStatusCode().value()));
+        apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(ResourceAccessException.class)
+    protected ResponseEntity<Object> handleClientError(
+            ResourceAccessException ex) {
+        ApiError apiError = new ApiError(HttpStatus.EXPECTATION_FAILED);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }

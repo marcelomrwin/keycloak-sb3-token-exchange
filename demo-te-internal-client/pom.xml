@@ -10,9 +10,11 @@
     </parent>
 
     <artifactId>demo-te-internal-client</artifactId>
+    <packaging>jar</packaging>
 
     <properties>
         <version.infinispan>14.0.21.Final</version.infinispan>
+        <start-class>com.redhat.rhbk.Main</start-class>
     </properties>
 
     <dependencyManagement>
@@ -45,11 +47,6 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.nimbusds</groupId>
-            <artifactId>nimbus-jose-jwt</artifactId>
-            <version>9.37.1</version>
-        </dependency>
-        <dependency>
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-spring-boot3-starter-embedded</artifactId>
         </dependency>
@@ -66,6 +63,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
@@ -76,7 +77,46 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.redhat.rhbk.Main</mainClass>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
+            <plugin>
+                <groupId>org.eclipse.jkube</groupId>
+                <artifactId>openshift-maven-plugin</artifactId>
+                <configuration>
+                    <buildStrategy>docker</buildStrategy>
+                    <resources>
+                        <controller>
+                            <containerResources>
+                                <requests>
+                                    <memory>64M</memory>
+                                    <cpu>300m</cpu>
+                                </requests>
+                                <limits>
+                                    <memory>256M</memory>
+                                    <cpu>1000m</cpu>
+                                </limits>
+                            </containerResources>
+                        </controller>
+                    </resources>
+                </configuration>
+                <version>1.15.0</version>
+            </plugin>
+
         </plugins>
     </build>
 

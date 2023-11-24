@@ -1,0 +1,33 @@
+spec:
+  template:
+    spec:
+      containers:
+        - env:
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: demo-te-external-client
+                  key: client-id
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: demo-te-external-client
+                  key: client-secret
+          volumeMounts:
+            - mountPath: "/app/secret"
+              name: app-secret
+              readOnly: true
+            - mountPath: "/app/config"
+              name: app-config
+      volumes:
+        - name: app-secret
+          secret:
+            secretName: demo-te-external-client
+            items:
+              - key: keycloak.pem
+                path: keycloak.pem
+              - key: keycloak.jks
+                path: keycloak.jks
+        - name: app-config
+          configMap:
+            name: demo-te-external-client

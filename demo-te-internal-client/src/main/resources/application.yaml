@@ -1,12 +1,14 @@
 server:
   port: 8082
 spring:
+  application:
+    name: demo-te-internal-client
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: https://keycloak.lab.masales.cloud:8443/realms/demo-te
-          use-cache: true
+          use-cache: false
       public-key:
         location: keycloak.pem
 keycloak:

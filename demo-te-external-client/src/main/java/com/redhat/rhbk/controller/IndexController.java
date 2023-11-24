@@ -1,17 +1,18 @@
-package com.redhat.rhbk;
+package com.redhat.rhbk.controller;
 
 
 import java.util.HashMap;
 
+import com.redhat.rhbk.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -27,17 +28,11 @@ public class IndexController {
     @Value("${api.host.baseurl}")
     private String apiHost;
 
-    @GetMapping(path = "/")
-    public HashMap index() {
-        // get a successful user login
-        OAuth2User user = ((OAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-
-        return new HashMap() {{
-            put("message", "Congratulations! You're authenticated");
-            put("hello", user.getAttribute("name"));
-            put("your email is", user.getAttribute("email"));
-            put("Next", "Call GET http://localhost:80801/client");
-        }};
+    @GetMapping(path = "/", produces = "application/json")
+    public ResponseEntity<Jwt> index() {
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<Jwt>(securityService.getJWT(), httpHeaders, HttpStatus.OK);
     }
 
     @GetMapping(path = "/unauthenticated")
@@ -47,7 +42,7 @@ public class IndexController {
         }};
     }
 
-    @GetMapping("/client")
+    @GetMapping(path = "/client", produces = "application/json")
     public ResponseEntity<String> invokeClient() {
 
         HttpHeaders headers = new HttpHeaders();

@@ -42,7 +42,7 @@ public class SecurityConfiguration {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests().requestMatchers("/ping").permitAll()
+        http.authorizeRequests().requestMatchers("/ping", "/actuator/*").permitAll()
                 .requestMatchers("/internal").access("hasRole('ROLE_ONE')")
                 .anyRequest().authenticated()
                 .and()

@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-te-external-client
+data:
+  application.properties: |-
+    server.port=8080
+    spring.application.name=demo-te-external-client
+    logging.level.org.springframework.security=INFO
+    logging.pattern.console=%d{dd-MM-yyyy HH:mm:ss} %magenta([%thread]) %highlight(%-5level) %logger.%M - %msg%n
+    logging.level.root=warn
+    logging.level.com.redhat=debug
+    server.forward-headers-strategy=NATIVE
+    spring.security.oauth2.client.provider.keycloak.issuer-uri=https://rhbk.apps.ocp4.quitala.eu/realms/3scale
+    spring.security.oauth2.client.registration.keycloak.provider=keycloak
+    spring.security.oauth2.client.registration.keycloak.client-name=db23aeb0
+    spring.security.oauth2.client.registration.keycloak.client-id=${CLIENT_ID}
+    spring.security.oauth2.client.registration.keycloak.client-secret=${CLIENT_SECRET}
+    spring.security.oauth2.client.registration.keycloak.scope=openid,profile
+    spring.security.oauth2.client.registration.keycloak.authorization-grant-type=authorization_code
+    spring.security.oauth2.client.public-key.location=file:/app/secret/keycloak.pem
+    api.host.baseurl=http://demo-te-internal-client-appdev-integration.apps.ocp4.quitala.eu/internal
+    logout.baseurl=https://rhbk.apps.ocp4.quitala.eu/realms/3scale/protocol/openid-connect/logout
+    #trust store location
+    trust.store=file:/app/secret/keycloak.jks
+    #trust store password
+    trust.store.password=password

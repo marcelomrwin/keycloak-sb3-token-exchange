@@ -19,7 +19,7 @@ public class KeycloakTokenExchangeJwtDecoder implements JwtDecoder {
     @Override
     public Jwt decode(String token) throws JwtException {
         try {
-            Jwt jwt = tokenService.getJwt(token, delegate);
+            Jwt jwt = tokenService.getJwtFromAuthorizationHeader(token, delegate);
             return jwt;
         } catch (Exception e) {
             throw new JwtException(e.getMessage());

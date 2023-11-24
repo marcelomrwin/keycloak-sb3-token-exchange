@@ -1,4 +1,4 @@
-package com.redhat.rhbk;
+package com.redhat.rhbk.conf;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

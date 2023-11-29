@@ -6,9 +6,9 @@ data:
   application.properties: |-
     server.port=8080
     spring.application.name=demo-te-internal-client
-    spring.security.oauth2.resourceserver.jwt.issuer-uri=https://rhbk.apps.ocp4.quitala.eu/realms/3scale
+    spring.security.oauth2.resourceserver.jwt.issuer-uri=<ISSUER_URL>
     spring.security.oauth2.resourceserver.jwt.use-cache=false
     spring.security.oauth2.public-key.location=file:/app/secret/keycloak.pem
-    keycloak.token.exchange.endpoint=https://rhbk.apps.ocp4.quitala.eu/realms/3scale/protocol/openid-connect/token
+    keycloak.token.exchange.endpoint=<ISSUER_URL>/protocol/openid-connect/token
     keycloak.token.exchange.client-id=${CLIENT_ID}
     keycloak.token.exchange.client-secret=${CLIENT_SECRET}

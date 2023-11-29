@@ -12,6 +12,7 @@
     <modules>
         <module>demo-te-external-client</module>
         <module>demo-te-internal-client</module>
+        <module>demo-te-camel-service-gateway</module>
     </modules>
 
     <properties>
